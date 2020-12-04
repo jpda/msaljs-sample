@@ -25,13 +25,26 @@ export class GraphView extends React.Component<Props, State> {
         super(props, state);
         this.auth = props.auth;
         this.state = { userInfo: [new Kvp("loading...", "loading...")] };
-
         // here we set the scopes we'll need to request from the user for this view
         this.scopeConfiguration = { scopes: ["https://graph.microsoft.com/User.Read"] };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        let token: AuthResponse;
         if (this.auth.msalObj.getAccount()) { // account is available, so we're signed in
+            try {
+                token = await this.auth.msalObj.acquireTokenSilent(this.scopeConfiguration);
+            } catch (error) {
+                token = await this.auth.msalObj.acquireTokenPopup(this.scopeConfiguration);
+            }
+            var graphRequest = await fetch("https://graph.microsoft.com/v1.0/me", {
+                headers: new Headers({
+                    "Authorization": "Bearer " + token.AccessToken
+                })
+            });
+
+            var graphData = await graphRequest.json();
+
             this.auth.msalObj.acquireTokenSilent(this.scopeConfiguration)
                 .then(t => this.fetchData(t))
                 .catch(e => this.tokenError(e));
@@ -77,7 +90,6 @@ export class GraphView extends React.Component<Props, State> {
         if (token.tokenType !== "access_token" || token.accessToken === null) {
             this.handleFatalError({ errorCode: "wrong_token_type" });
         }
-
         console.debug("graphview: got access token: " + token.accessToken.substr(0, 10) + "...");
         fetch("https://graph.microsoft.com/v1.0/me",
             {
@@ -112,9 +124,9 @@ export class GraphView extends React.Component<Props, State> {
                             <Card.Header as="h5">Single scope, statically assigned</Card.Header>
                             <Card.Body>
                                 <p>In this example, the requested scopes are assigned in the application registration, before the application
-                                    ever runs. This is an administrative Azure AD activity, where the owner of the app registration
-                                    determines which scopes/permissions are required and enables the application to request them.
-                                    This is how Azure AD v1 resource permissions were handled.
+                                ever runs. This is an administrative Azure AD activity, where the owner of the app registration
+                                determines which scopes/permissions are required and enables the application to request them.
+                                This is how Azure AD v1 resource permissions were handled.
                                 </p>
                                 <CardDeck>
                                     <Card>
