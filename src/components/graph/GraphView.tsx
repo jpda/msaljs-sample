@@ -39,7 +39,7 @@ export class GraphView extends React.Component<Props, State> {
             }
             var graphRequest = await fetch("https://graph.microsoft.com/v1.0/me", {
                 headers: new Headers({
-                    "Authorization": "Bearer " + token.AccessToken
+                    "Authorization": "Bearer " + token.accessToken
                 })
             });
 
