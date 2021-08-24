@@ -43,7 +43,7 @@ export class GraphView extends React.Component<Props, State> {
                 })
             });
 
-            var graphData = await graphRequest.json();
+            //var graphData = await graphRequest.json();
 
             this.auth.msalObj.acquireTokenSilent(this.scopeConfiguration)
                 .then(t => this.fetchData(t))
