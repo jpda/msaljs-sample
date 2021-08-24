@@ -32,7 +32,7 @@ class App extends Component<any, State> {
       config: {
         auth: {
           clientId: "31c0ca04-16fb-49b6-83a2-e8c8487ea4fd",
-          authority: "https://login.microsoftonline.com/98a34a88-7940-40e8-af71-913452037f31",
+          authority: "https://login.microsoftonline.com/common",
           redirectUrl: "http://localhost:3000/#/"
         },
         cache: {
