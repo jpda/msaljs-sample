@@ -30,13 +30,13 @@ export class GraphView extends React.Component<Props, State> {
     }
 
     async componentDidMount() {
-        let token: AuthResponse;
+        //let token: AuthResponse;
         if (this.auth.msalObj.getAccount()) { // account is available, so we're signed in
-            try {
-                token = await this.auth.msalObj.acquireTokenSilent(this.scopeConfiguration);
-            } catch (error) {
-                token = await this.auth.msalObj.acquireTokenPopup(this.scopeConfiguration);
-            }
+            //try {
+            //    token = await this.auth.msalObj.acquireTokenSilent(this.scopeConfiguration);
+            //} catch (error) {
+            //    token = await this.auth.msalObj.acquireTokenPopup(this.scopeConfiguration);
+            //}
             //var graphRequest = await fetch("https://graph.microsoft.com/v1.0/me", {
             //    headers: new Headers({
             //        "Authorization": "Bearer " + token.accessToken
